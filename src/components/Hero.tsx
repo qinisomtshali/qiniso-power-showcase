@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from "framer-motion";
 import { ArrowRight, Code, Zap } from 'lucide-react';
 
 const Hero = () => {
@@ -26,31 +27,54 @@ const Hero = () => {
               SharePoint, and Dataverse — with a creative edge from my multimedia background.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-lg font-semibold">
-                View Projects
-                <ArrowRight size={20} />
-              </button>
-              <button className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full hover:border-blue-600 hover:text-blue-600 transition-all duration-300 flex items-center justify-center gap-2 text-lg font-semibold">
-                Contact Me
-              </button>
-            </div>
+           <div className="flex flex-col sm:flex-row gap-4">
+            <button
+              onClick={() => {
+                const el = document.getElementById("projects");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-full hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 text-lg font-semibold"
+            >
+              View Projects
+              <ArrowRight size={20} />
+            </button>
 
-            {/* Stats */}
-            <div className="flex gap-8 pt-8 border-t border-gray-200">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-blue-600">4+</div>
-                <div className="text-gray-600">Certifications</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-purple-600">10+</div>
-                <div className="text-gray-600">Projects</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-indigo-600">2+</div>
-                <div className="text-gray-600">Years Experience</div>
-              </div>
-            </div>
+            <button
+              onClick={() => {
+                const el = document.getElementById("contact");
+                el?.scrollIntoView({ behavior: "smooth" });
+              }}
+              className="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-full hover:border-blue-600 hover:text-blue-600 transition-all duration-300 flex items-center justify-center gap-2 text-lg font-semibold"
+            >
+              Contact Me
+            </button>
+          </div>
+
+
+           {/* Stats */}
+            <motion.div
+              className="flex gap-8 pt-8 border-t border-gray-200"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              {[
+                { value: "4+", label: "Certifications", color: "text-blue-600" },
+                { value: "10+", label: "Projects", color: "text-purple-600" },
+                { value: "2+", label: "Years Experience", color: "text-indigo-600" },
+              ].map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  className="text-center"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 * index, duration: 0.6 }}
+                >
+                  <div className={`text-3xl font-bold ${stat.color}`}>{stat.value}</div>
+                  <div className="text-gray-600">{stat.label}</div>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
 
           {/* Profile Image */}
@@ -59,7 +83,11 @@ const Hero = () => {
               <div className="w-80 h-80 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 rounded-full p-1 animate-pulse">
                 <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                   <div className="w-72 h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
-                    <div className="text-6xl text-gray-400">👨‍💻</div>
+                    <img
+                      src="/my-photo.jpg"
+                      alt="Qiniso Mtshali"
+                      className="w-72 h-72 object-cover rounded-full"
+                    />
                   </div>
                 </div>
               </div>

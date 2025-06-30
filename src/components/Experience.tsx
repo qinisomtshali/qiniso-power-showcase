@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { motion } from "framer-motion";
 import { Calendar, MapPin, Building, ChevronRight } from 'lucide-react';
 
 const Experience = () => {
@@ -85,9 +86,15 @@ const Experience = () => {
     <section id="experience" className="py-20 bg-white">
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="text-center mb-16">
-          <h2 className="text-4xl lg:text-5xl font-bold mb-6">
+          <motion.h2
+            className="text-4xl lg:text-5xl font-bold mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+            transition={{ duration: 0.6 }}
+          >
             Professional <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Experience</span>
-          </h2>
+          </motion.h2>
           <p className="text-xl text-gray-600">
             My journey from manufacturing to cutting-edge technology
           </p>
