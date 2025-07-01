@@ -1,22 +1,46 @@
-
-import React from 'react';
+import React from "react";
 import { motion } from "framer-motion";
 
 const TechStack = () => {
   const powerPlatform = [
-    { name: "Power Apps", level: 90, color: "bg-blue-500" },
-    { name: "Power Automate", level: 95, color: "bg-purple-500" },
-    { name: "SharePoint", level: 85, color: "bg-green-500" },
-    { name: "Dataverse", level: 80, color: "bg-indigo-500" },
-    { name: "Dynamics 365", level: 75, color: "bg-orange-500" }
+    {
+      name: "Power Apps",
+      level: 90,
+      color: "bg-blue-500",
+      icon: "/Images/logos/powerapp.png",
+    },
+    {
+      name: "Power Automate",
+      level: 95,
+      color: "bg-purple-500",
+      icon: "/Images/logos/MicrosoftPowerAutomate.png",
+    },
+    {
+      name: "SharePoint",
+      level: 85,
+      color: "bg-green-500",
+      icon: "/Images/logos/sharepoint.png",
+    },
+    {
+      name: "Dataverse",
+      level: 80,
+      color: "bg-indigo-500",
+      icon: "/Images/logos/dataverse.png",
+    },
+    {
+      name: "Dynamics 365",
+      level: 75,
+      color: "bg-orange-500",
+      icon: "/Images/logos/Microsoft_365.png",
+    },
   ];
 
   const cloudTools = [
     "Microsoft Azure",
-    "PowerShell", 
+    "PowerShell",
     "Power BI",
     "Office 365",
-    "Azure Active Directory"
+    "Azure Active Directory",
   ];
 
   const devTools = [
@@ -24,7 +48,7 @@ const TechStack = () => {
     "Visual Studio Code",
     "Power Platform CLI",
     "Azure DevOps",
-    "REST APIs"
+    "REST APIs",
   ];
 
   const creative = [
@@ -32,7 +56,7 @@ const TechStack = () => {
     "Blender",
     "Adobe Creative Suite",
     "VR Development",
-    "Game Design"
+    "Game Design",
   ];
 
   return (
@@ -46,7 +70,10 @@ const TechStack = () => {
             viewport={{ once: true, amount: 0.5 }}
             transition={{ duration: 0.6 }}
           >
-            Tech <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Stack</span>
+            Tech{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Stack
+            </span>
           </motion.h2>
           <p className="text-xl text-gray-600">
             Technologies and tools I use to build powerful solutions
@@ -65,14 +92,26 @@ const TechStack = () => {
               {powerPlatform.map((skill, index) => (
                 <div key={index}>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-medium text-gray-700">{skill.name}</span>
+                    <div className="flex items-center gap-2 font-medium text-gray-700">
+                      {/* Icon */}
+                      <img
+                        src={skill.icon}
+                        alt={`${skill.name} icon`}
+                        className="w-5 h-5"
+                      />
+                      <span>{skill.name}</span>
+                    </div>
                     <span className="text-sm text-gray-500">{skill.level}%</span>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3">
-                    <div 
-                      className={`${skill.color} h-3 rounded-full transition-all duration-1000 ease-out`}
-                      style={{ width: `${skill.level}%` }}
-                    ></div>
+
+                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                    <motion.div
+                      className={`${skill.color} h-3 rounded-full`}
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${skill.level}%` }}
+                      viewport={{ once: true, amount: 0.5 }}
+                      transition={{ duration: 1.2, ease: "easeOut" }}
+                    />
                   </div>
                 </div>
               ))}
@@ -89,7 +128,10 @@ const TechStack = () => {
               </h4>
               <div className="flex flex-wrap gap-2">
                 {cloudTools.map((tool, index) => (
-                  <span key={index} className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span
+                    key={index}
+                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
+                  >
                     {tool}
                   </span>
                 ))}
@@ -104,7 +146,10 @@ const TechStack = () => {
               </h4>
               <div className="flex flex-wrap gap-2">
                 {devTools.map((tool, index) => (
-                  <span key={index} className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span
+                    key={index}
+                    className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+                  >
                     {tool}
                   </span>
                 ))}
@@ -119,7 +164,10 @@ const TechStack = () => {
               </h4>
               <div className="flex flex-wrap gap-2">
                 {creative.map((tool, index) => (
-                  <span key={index} className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium">
+                  <span
+                    key={index}
+                    className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+                  >
                     {tool}
                   </span>
                 ))}

@@ -27,19 +27,19 @@ const Contact = () => {
     {
       icon: <Mail className="w-6 h-6" />,
       title: "Email",
-      value: "qiniso.mtshali@example.com",
-      link: "mailto:qiniso.mtshali@example.com"
+      value: "qiniso.sakhiwo.mtshali@gmail.com",
+      link: "mailto:qiniso.sakhiwo.mtshali@gmail.com"
     },
     {
       icon: <Phone className="w-6 h-6" />,
       title: "Phone",
-      value: "+27 123 456 789",
-      link: "tel:+27123456789"
+      value: "+27 798 111 015",
+      link: "tel:+27798111015"
     },
     {
       icon: <MapPin className="w-6 h-6" />,
       title: "Location",
-      value: "South Africa",
+      value: "Johannesburg, Gauteng, South Africa",
       link: null
     }
   ];
@@ -48,19 +48,19 @@ const Contact = () => {
     {
       icon: <Linkedin className="w-6 h-6" />,
       name: "LinkedIn",
-      url: "https://linkedin.com/in/qiniso-mtshali",
+      url: "https://www.linkedin.com/in/qiniso-mtshali-532394173/",
       color: "hover:text-blue-600"
     },
     {
       icon: <Github className="w-6 h-6" />,
       name: "GitHub", 
-      url: "https://github.com/qiniso-mtshali",
+      url: "https://github.com/qinisomtshali/",
       color: "hover:text-gray-800"
     },
     {
       icon: <Mail className="w-6 h-6" />,
       name: "Email",
-      url: "mailto:qiniso.mtshali@example.com",
+      url: "mailto:qiniso.sakhiwo.mtshali@gmail.com",
       color: "hover:text-red-600"
     }
   ];

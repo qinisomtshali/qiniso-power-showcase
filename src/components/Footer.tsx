@@ -15,17 +15,17 @@ const Footer = () => {
   const socialLinks = [
     {
       icon: <Linkedin className="w-5 h-5" />,
-      href: "https://linkedin.com/in/qiniso-mtshali",
+      href: "https://www.linkedin.com/in/qiniso-mtshali-532394173/",
       name: "LinkedIn"
     },
     {
       icon: <Github className="w-5 h-5" />,
-      href: "https://github.com/qiniso-mtshali", 
+      href: "https://github.com/qinisomtshali/", 
       name: "GitHub"
     },
     {
       icon: <Mail className="w-5 h-5" />,
-      href: "mailto:qiniso.mtshali@example.com",
+      href: "mailto:qiniso.sakhiwo.mtshali@gmail.com",
       name: "Email"
     }
   ];
