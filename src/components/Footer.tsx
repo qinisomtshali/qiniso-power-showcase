@@ -43,13 +43,8 @@ const Footer = () => {
               Power Platform Developer passionate about building innovative business solutions 
               with a creative edge from multimedia and VR backgrounds.
             </p>
-            <div className="flex items-center gap-2 text-gray-400">
-              <span>Made with</span>
-              <Heart className="w-4 h-4 text-red-500" />
-              <span>and</span>
-              <Code className="w-4 h-4 text-blue-400" />
-              <span>in South Africa</span>
-            </div>
+      
+
           </div>
 
           {/* Quick Links */}
@@ -90,7 +85,7 @@ const Footer = () => {
             {/* Optional Creative Journey Link */}
             <div className="mt-6">
               <a 
-                href="#creative"
+                href="https://github.com/qinisomtshali/"
                 className="text-purple-400 hover:text-purple-300 transition-colors duration-200 text-sm"
               >
                 Explore My Creative Journey →

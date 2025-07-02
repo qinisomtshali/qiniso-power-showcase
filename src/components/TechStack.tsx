@@ -5,31 +5,31 @@ const TechStack = () => {
   const powerPlatform = [
     {
       name: "Power Apps",
-      level: 90,
+      level: 75,
       color: "bg-blue-500",
       icon: "/Images/logos/powerapp.png",
     },
     {
       name: "Power Automate",
-      level: 95,
+      level: 70,
       color: "bg-purple-500",
       icon: "/Images/logos/MicrosoftPowerAutomate.png",
     },
     {
       name: "SharePoint",
-      level: 85,
+      level: 80,
       color: "bg-green-500",
       icon: "/Images/logos/sharepoint.png",
     },
     {
       name: "Dataverse",
-      level: 80,
+      level: 40,
       color: "bg-indigo-500",
       icon: "/Images/logos/dataverse.png",
     },
     {
       name: "Dynamics 365",
-      level: 75,
+      level: 60,
       color: "bg-orange-500",
       icon: "/Images/logos/Microsoft_365.png",
     },

@@ -44,10 +44,16 @@ const Header = () => {
                 {item.label}
               </a>
             ))}
+           <a 
+            href="/Qiniso_Mtshali_Power_platform_Developer.pdf" 
+            download 
+            className="inline-block"
+          >
             <button className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full hover:shadow-lg transition-all duration-300 flex items-center gap-2">
               <Download size={16} />
               Download CV
             </button>
+          </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -73,10 +79,18 @@ const Header = () => {
               </a>
             ))}
             <div className="px-4 py-2">
-              <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-2 rounded-full flex items-center justify-center gap-2">
-                <Download size={16} />
-                Download CV
-              </button>
+              <a 
+                href="/Qiniso_Mtshali_Power_platform_Developer.pdf" 
+                download 
+                className="block w-full sm:w-auto"
+              >
+                <button 
+                  className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-full flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all duration-300 text-sm sm:text-base"
+                >
+                  <Download size={18} />
+                  Download CV
+                </button>
+              </a>
             </div>
           </div>
         )}
