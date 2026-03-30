@@ -5,31 +5,31 @@ const TechStack = () => {
   const powerPlatform = [
     {
       name: "Power Apps",
-      level: 75,
+      level: 85,
       color: "bg-blue-500",
       icon: "/Images/logos/powerapp.png",
     },
     {
       name: "Power Automate",
-      level: 70,
+      level: 82,
       color: "bg-purple-500",
       icon: "/Images/logos/MicrosoftPowerAutomate.png",
     },
     {
       name: "SharePoint",
-      level: 80,
+      level: 85,
       color: "bg-green-500",
       icon: "/Images/logos/sharepoint.png",
     },
     {
       name: "Dataverse",
-      level: 40,
+      level: 65,
       color: "bg-indigo-500",
       icon: "/Images/logos/dataverse.png",
     },
     {
       name: "Dynamics 365",
-      level: 60,
+      level: 70,
       color: "bg-orange-500",
       icon: "/Images/logos/Microsoft_365.png",
     },
@@ -41,6 +41,8 @@ const TechStack = () => {
     "Power BI",
     "Office 365",
     "Azure Active Directory",
+    "Supabase",
+    "Azure Functions",
   ];
 
   const devTools = [
@@ -49,6 +51,21 @@ const TechStack = () => {
     "Power Platform CLI",
     "Azure DevOps",
     "REST APIs",
+    "React",
+    "TypeScript",
+    "Python",
+    "FastAPI",
+    "Blazor / ASP.NET",
+    "Node.js",
+  ];
+
+  const aiData = [
+    "OpenAI API",
+    "Qdrant",
+    "RAG / Vector Search",
+    "PyMuPDF",
+    "tiktoken",
+    "NumPy",
   ];
 
   const creative = [
@@ -167,6 +184,24 @@ const TechStack = () => {
                   <span
                     key={index}
                     className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
+                  >
+                    {tool}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            {/* AI & Data */}
+            <div className="bg-white rounded-2xl shadow-lg p-6">
+              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                AI & Data
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {aiData.map((tool, index) => (
+                  <span
+                    key={index}
+                    className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium"
                   >
                     {tool}
                   </span>

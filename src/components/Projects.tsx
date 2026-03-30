@@ -55,14 +55,14 @@ const Projects = () => {
     },
     {
       title: "ZaziEdu — SA University Course Finder",
-      description: "A full-stack platform helping South African students discover universities, courses, and bursaries. Features APS score matching, intelligent course filtering, and a growing database of 1,160+ courses across 26 universities.",
-      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop",
+      description: "A full-stack platform helping South African students discover universities, courses, and bursaries. Features APS score matching, intelligent course filtering, and a live database of 1,560+ courses across 26 universities — with over 450 active users.",
+      image: "https://images.unsplash.com/photo-1562774053-701939374585?w=600&h=400&fit=crop",
       technologies: ["React", "Supabase", "PostgreSQL", "TypeScript"],
       features: [
-        "1,160+ courses across 26 SA universities",
+        "1,560+ courses across 26 SA universities",
         "APS score-based course matching",
-        "47+ bursary listings with eligibility filters",
-        "Infinite scroll with real-time search & filtering"
+        "100+ bursary listings with eligibility filters",
+        "450+ active users with infinite scroll & real-time search"
       ],
       icon: <Users className="w-6 h-6" />,
       color: "from-blue-500 to-cyan-500",

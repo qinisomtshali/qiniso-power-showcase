@@ -85,15 +85,19 @@ const Hero = () => {
                 animate={{ rotate: 360 }}
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
               >
-                <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
+                <motion.div
+                  className="w-full h-full bg-white rounded-full flex items-center justify-center"
+                  animate={{ rotate: -360 }}
+                  transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                >
                   <div className="w-72 h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
                     <img
-                      src="/my-photo.jpg"
+                      src="/my-photo.jpeg"
                       alt="Qiniso Mtshali"
                       className="w-72 h-72 object-cover rounded-full"
                     />
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
               <div className="absolute -top-4 -right-4 bg-blue-500 text-white p-3 rounded-full shadow-lg">
                 <Code size={24} />
