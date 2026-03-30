@@ -1,7 +1,12 @@
 
 import React, { useState } from 'react';
 import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Linkedin, Github } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Linkedin, Github, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+
+const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +14,7 @@ const Contact = () => {
     email: '',
     message: ''
   });
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({
@@ -17,10 +23,25 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    // Handle form submission logic here
+    setStatus('loading');
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+        },
+        PUBLIC_KEY
+      );
+      setStatus('success');
+      setFormData({ name: '', email: '', message: '' });
+    } catch {
+      setStatus('error');
+    }
   };
 
   const contactInfo = [
@@ -189,12 +210,36 @@ const Contact = () => {
                 />
               </div>
 
+              {status === 'success' && (
+                <div className="flex items-center gap-2 text-green-600 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
+                  <CheckCircle size={18} />
+                  <span className="font-medium">Message sent! I'll get back to you soon.</span>
+                </div>
+              )}
+
+              {status === 'error' && (
+                <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
+                  <AlertCircle size={18} />
+                  <span className="font-medium">Something went wrong. Please try again or email me directly.</span>
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 font-semibold text-lg"
+                disabled={status === 'loading'}
+                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 font-semibold text-lg disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                Send Message
-                <Send size={20} />
+                {status === 'loading' ? (
+                  <>
+                    <Loader size={20} className="animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  <>
+                    Send Message
+                    <Send size={20} />
+                  </>
+                )}
               </button>
             </form>
           </div>

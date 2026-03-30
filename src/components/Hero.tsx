@@ -80,7 +80,11 @@ const Hero = () => {
           {/* Profile Image */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative">
-              <div className="w-80 h-80 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 rounded-full p-1 animate-pulse">
+              <motion.div
+                className="w-80 h-80 bg-gradient-to-br from-blue-400 via-purple-500 to-indigo-600 rounded-full p-1"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+              >
                 <div className="w-full h-full bg-white rounded-full flex items-center justify-center">
                   <div className="w-72 h-72 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center">
                     <img
@@ -90,7 +94,7 @@ const Hero = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </motion.div>
               <div className="absolute -top-4 -right-4 bg-blue-500 text-white p-3 rounded-full shadow-lg">
                 <Code size={24} />
               </div>

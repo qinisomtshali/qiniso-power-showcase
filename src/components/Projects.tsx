@@ -46,12 +46,57 @@ const Projects = () => {
       features: [
         "Custom client onboarding",
         "Automated workflow triggers",
-        "Enhanced tracking capabilities", 
+        "Enhanced tracking capabilities",
         "Sales pipeline optimization"
       ],
       icon: <Zap className="w-6 h-6" />,
       color: "from-purple-500 to-violet-500",
       caseStudyUrl: "https://github.com/qinisomtshali/Leave-Request-App"
+    },
+    {
+      title: "ZaziEdu — SA University Course Finder",
+      description: "A full-stack platform helping South African students discover universities, courses, and bursaries. Features APS score matching, intelligent course filtering, and a growing database of 1,160+ courses across 26 universities.",
+      image: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=600&h=400&fit=crop",
+      technologies: ["React", "Supabase", "PostgreSQL", "TypeScript"],
+      features: [
+        "1,160+ courses across 26 SA universities",
+        "APS score-based course matching",
+        "47+ bursary listings with eligibility filters",
+        "Infinite scroll with real-time search & filtering"
+      ],
+      icon: <Users className="w-6 h-6" />,
+      color: "from-blue-500 to-cyan-500",
+      caseStudyUrl: "https://github.com/qinisomtshali"
+    },
+    {
+      title: "ZARFlow — Personal Finance Tracker",
+      description: "A comprehensive personal finance platform built for South Africans. Tracks income, expenses, budgets, savings goals, crypto, and debt — with gamification, leaderboards, and a roadmap toward a full mobile app.",
+      image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=600&h=400&fit=crop",
+      technologies: ["React", "TypeScript", "Supabase", "Recharts"],
+      features: [
+        "Budget tracking with category breakdowns",
+        "Crypto & investment portfolio monitoring",
+        "Debt planner with payoff strategies",
+        "Gamification with achievements & leaderboards"
+      ],
+      icon: <Zap className="w-6 h-6" />,
+      color: "from-green-500 to-emerald-500",
+      caseStudyUrl: "https://github.com/qinisomtshali"
+    },
+    {
+      title: "FinDoc Brain — AI Financial Document Q&A",
+      description: "A RAG-based AI system that lets you interrogate financial documents like annual reports and loan agreements in plain English. Built from scratch — PDF ingestion, vector embeddings, semantic retrieval, and a FastAPI backend.",
+      image: "https://images.unsplash.com/photo-1485988412941-77a35537dae4?w=600&h=400&fit=crop",
+      technologies: ["Python", "OpenAI", "Qdrant", "FastAPI", "PyMuPDF"],
+      features: [
+        "PDF ingestion & intelligent chunking pipeline",
+        "Vector embeddings via OpenAI text-embedding-3-small",
+        "Semantic search with Qdrant vector store",
+        "FastAPI backend with React chat UI (in progress)"
+      ],
+      icon: <FileText className="w-6 h-6" />,
+      color: "from-purple-500 to-violet-500",
+      caseStudyUrl: "https://github.com/qinisomtshali"
     }
   ];
 

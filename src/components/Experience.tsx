@@ -5,10 +5,29 @@ import { Calendar, MapPin, Building, ChevronRight } from 'lucide-react';
 const Experience = () => {
   const experiences = [
     {
+      title: "Junior Software Engineer & Application Support",
+      company: "HearConnect SA",
+      location: "South Africa",
+      period: "MAR 2026 – Present",
+      type: "Full-time",
+      description:
+        "Building, enhancing, and maintaining the company's primary CRM system and integrated applications across the Microsoft technology stack. Delivering full-stack internal systems from requirements through to deployment, while providing first- and second-line application support across Microsoft environments and third-party platforms.",
+      achievements: [
+        "CRM development & maintenance across the Microsoft stack",
+        "Full-stack application development from requirements to deployment",
+        "First- and second-line application support & troubleshooting",
+        "System performance monitoring and proactive issue resolution",
+        "IT governance, data protection, and security protocol adherence",
+        "User access management and internal user support"
+      ],
+      logo: "hearconnect.png",
+      color: "from-blue-500 to-cyan-500"
+    },
+    {
       title: "Power Platform Developer Intern",
       company: "HearConnect",
       location: "South Africa",
-      period: "MAR 2025 – Present",
+      period: "MAR 2025 – FEB 2026",
       type: "Internship",
       description:
         "Building end-to-end business solutions using Power Apps, Power Automate, and SharePoint. Enhancing leave management and approval systems, integrating Microsoft services, and supporting digital transformation within the organization.",
