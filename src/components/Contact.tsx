@@ -1,31 +1,35 @@
-
-import React, { useState } from 'react';
-import { motion } from "framer-motion";
-import { Mail, Phone, MapPin, Send, Linkedin, Github, CheckCircle, AlertCircle, Loader } from 'lucide-react';
-import emailjs from '@emailjs/browser';
+import React, { useRef, useState } from "react";
+import { ArrowUpRight, CheckCircle, AlertCircle, Loader, Send } from "lucide-react";
+import emailjs from "@emailjs/browser";
+import { useReveals } from "@/lib/reveal";
+import ContourField from "@/components/fx/ContourField";
+import Footer from "@/components/Footer";
+import { useMagnetic } from "@/components/fx/useMagnetic";
+import { SITE, SOCIALS } from "@/data/site";
 
 const SERVICE_ID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
 const TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
 const PUBLIC_KEY = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 
+const fieldClass =
+  "w-full border-0 border-b border-ice/25 bg-transparent px-0 py-4 text-lg text-ice transition-colors placeholder:text-ice/40 focus:border-signal focus:outline-none focus:ring-0";
+const labelClass = "text-[0.68rem] font-medium uppercase tracking-[0.22em] text-ice/50";
+
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: ''
-  });
-  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const root = useRef<HTMLElement>(null);
+  const send = useMagnetic<HTMLButtonElement>(0.25);
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  useReveals(root);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('loading');
+    setStatus("loading");
     try {
       await emailjs.send(
         SERVICE_ID,
@@ -37,213 +41,136 @@ const Contact = () => {
         },
         PUBLIC_KEY
       );
-      setStatus('success');
-      setFormData({ name: '', email: '', message: '' });
+      setStatus("success");
+      setFormData({ name: "", email: "", message: "" });
     } catch {
-      setStatus('error');
+      setStatus("error");
     }
   };
 
-  const contactInfo = [
-    {
-      icon: <Mail className="w-6 h-6" />,
-      title: "Email",
-      value: "qiniso.sakhiwo.mtshali@gmail.com",
-      link: "mailto:qiniso.sakhiwo.mtshali@gmail.com"
-    },
-    {
-      icon: <Phone className="w-6 h-6" />,
-      title: "Phone",
-      value: "+27 798 111 015",
-      link: "tel:+27798111015"
-    },
-    {
-      icon: <MapPin className="w-6 h-6" />,
-      title: "Location",
-      value: "Johannesburg, Gauteng, South Africa",
-      link: null
-    }
-  ];
-
-  const socialLinks = [
-    {
-      icon: <Linkedin className="w-6 h-6" />,
-      name: "LinkedIn",
-      url: "https://www.linkedin.com/in/qiniso-mtshali-532394173/",
-      color: "hover:text-blue-600"
-    },
-    {
-      icon: <Github className="w-6 h-6" />,
-      name: "GitHub", 
-      url: "https://github.com/qinisomtshali/",
-      color: "hover:text-gray-800"
-    },
-    {
-      icon: <Mail className="w-6 h-6" />,
-      name: "Email",
-      url: "mailto:qiniso.sakhiwo.mtshali@gmail.com",
-      color: "hover:text-red-600"
-    }
-  ];
-
   return (
-    <section id="contact" className="py-20 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl lg:text-5xl font-bold mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
-          >
-            Let's <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Connect</span>
-          </motion.h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Ready to discuss your next Power Platform project? I'd love to hear from you.
+    <section ref={root} id="contact" className="relative z-10 bg-signal p-3 md:p-4">
+      <div className="relative overflow-hidden rounded-[2rem] bg-ink text-ice md:rounded-[2.5rem]">
+        <ContourField className="absolute inset-0" color="rgba(246,248,249,0.07)" accent="rgba(0,212,230,0.2)" />
+
+        <div className="relative mx-auto max-w-[96rem] px-5 pt-28 md:px-10 md:pt-44">
+          <p className="eyebrow text-ice/60" data-fade>
+            Get in touch
           </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-6"></div>
-        </div>
+          <h2 data-reveal="lines" className="display rv-pending mt-6 text-[clamp(3.4rem,12.5vw,13.5rem)] leading-[0.9]">
+            Let&apos;s build something good.
+          </h2>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Info */}
-          <div className="space-y-8">
-            <div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-6">Get in Touch</h3>
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                Whether you're looking for a Power Platform developer, need consultation 
-                on business automation, or want to discuss a creative project, I'm here to help.
-              </p>
-            </div>
+          <div className="mt-20 grid gap-16 lg:mt-28 lg:grid-cols-12">
+            {/* Details */}
+            <div className="flex flex-col gap-10 lg:col-span-5">
+              <a
+                href={`mailto:${SITE.email}`}
+                data-cursor="Email"
+                data-fade
+                className="group display w-fit max-w-full break-words text-[clamp(1.15rem,2.05vw,2.3rem)] leading-[1.1] [overflow-wrap:anywhere]"
+              >
+                <span className="bg-gradient-to-r from-signal to-signal bg-[length:0%_2px] bg-left-bottom bg-no-repeat pb-1 transition-[background-size] duration-500 group-hover:bg-[length:100%_2px]">
+                  {SITE.email}
+                </span>
+                <ArrowUpRight className="ml-2 inline-block h-[0.8em] w-[0.8em] text-signal transition-transform duration-300 group-hover:rotate-45" />
+              </a>
 
-            {/* Contact Details */}
-            <div className="space-y-6">
-              {contactInfo.map((item, index) => (
-                <div key={index} className="flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                  <div className="text-blue-600">
-                    {item.icon}
-                  </div>
-                  <div>
-                    <div className="font-semibold text-gray-800">{item.title}</div>
-                    {item.link ? (
-                      <a href={item.link} className="text-gray-600 hover:text-blue-600 transition-colors">
-                        {item.value}
-                      </a>
-                    ) : (
-                      <div className="text-gray-600">{item.value}</div>
-                    )}
-                  </div>
+              <dl data-fade="children" data-stagger="0.1" className="divide-y divide-ice/12 border-y border-ice/12 text-[0.78rem] uppercase tracking-[0.14em]">
+                <div className="grid grid-cols-[6rem_1fr] gap-4 py-3.5">
+                  <dt className="text-ice/45">Phone</dt>
+                  <dd>
+                    <a href={SITE.phoneHref} className="font-medium transition-colors hover:text-signal">
+                      {SITE.phone}
+                    </a>
+                  </dd>
                 </div>
-              ))}
+                <div className="grid grid-cols-[6rem_1fr] gap-4 py-3.5">
+                  <dt className="text-ice/45">Location</dt>
+                  <dd className="font-medium">{SITE.location}</dd>
+                </div>
+                <div className="grid grid-cols-[6rem_1fr] gap-4 py-3.5">
+                  <dt className="text-ice/45">Elsewhere</dt>
+                  <dd className="flex flex-wrap gap-x-5 gap-y-1 font-medium">
+                    {SOCIALS.filter((s) => s.label !== "Email").map((s) => (
+                      <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 transition-colors hover:text-signal">
+                        {s.label} <ArrowUpRight size={13} />
+                      </a>
+                    ))}
+                  </dd>
+                </div>
+              </dl>
             </div>
 
-            {/* Social Links */}
-            <div className="pt-8">
-              <h4 className="text-xl font-bold text-gray-800 mb-4">Follow Me</h4>
-              <div className="flex gap-4">
-                {socialLinks.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-all duration-300 text-gray-600 ${social.color}`}
-                    title={social.name}
-                  >
-                    {social.icon}
-                  </a>
-                ))}
+            {/* Form */}
+            <form onSubmit={handleSubmit} data-fade className="lg:col-span-7" noValidate={false}>
+              <div className="grid gap-8 sm:grid-cols-2">
+                <div>
+                  <label htmlFor="name" className={labelClass}>
+                    Your name
+                  </label>
+                  <input id="name" name="name" type="text" required autoComplete="name" value={formData.name} onChange={handleChange} placeholder="Alex Rivera" className={fieldClass} />
+                </div>
+                <div>
+                  <label htmlFor="email" className={labelClass}>
+                    Email
+                  </label>
+                  <input id="email" name="email" type="email" required autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@company.com" className={fieldClass} />
+                </div>
               </div>
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6">Send a Message</h3>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="Enter your full name"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
-                  placeholder="your.email@example.com"
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="block text-sm font-semibold text-gray-700 mb-2">
-                  Message
+              <div className="mt-8">
+                <label htmlFor="message" className={labelClass}>
+                  What are you building?
                 </label>
                 <textarea
                   id="message"
                   name="message"
+                  required
+                  rows={4}
                   value={formData.message}
                   onChange={handleChange}
-                  required
-                  rows={5}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 resize-none"
-                  placeholder="Tell me about your project or how I can help..."
+                  placeholder="Tell me about the project, the timeline, and what success looks like…"
+                  className={`${fieldClass} resize-none`}
                 />
               </div>
 
-              {status === 'success' && (
-                <div className="flex items-center gap-2 text-green-600 bg-green-50 border border-green-200 rounded-lg px-4 py-3">
-                  <CheckCircle size={18} />
-                  <span className="font-medium">Message sent! I'll get back to you soon.</span>
-                </div>
-              )}
+              <div className="mt-10 flex flex-wrap items-center gap-6">
+                <button
+                  ref={send}
+                  type="submit"
+                  disabled={status === "loading"}
+                  data-cursor="Send"
+                  className="pill bg-signal text-ink hover:bg-ice disabled:cursor-not-allowed disabled:opacity-60"
+                >
+                  {status === "loading" ? (
+                    <>
+                      <Loader size={16} className="animate-spin" /> Sending…
+                    </>
+                  ) : (
+                    <>
+                      Send message <Send size={15} />
+                    </>
+                  )}
+                </button>
 
-              {status === 'error' && (
-                <div className="flex items-center gap-2 text-red-600 bg-red-50 border border-red-200 rounded-lg px-4 py-3">
-                  <AlertCircle size={18} />
-                  <span className="font-medium">Something went wrong. Please try again or email me directly.</span>
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === 'loading'}
-                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 px-6 rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-2 font-semibold text-lg disabled:opacity-70 disabled:cursor-not-allowed"
-              >
-                {status === 'loading' ? (
-                  <>
-                    <Loader size={20} className="animate-spin" />
-                    Sending...
-                  </>
-                ) : (
-                  <>
-                    Send Message
-                    <Send size={20} />
-                  </>
-                )}
-              </button>
+                <p role="status" aria-live="polite" className="text-sm">
+                  {status === "success" && (
+                    <span className="inline-flex items-center gap-2 text-signal">
+                      <CheckCircle size={18} /> Message sent — I&apos;ll get back to you soon.
+                    </span>
+                  )}
+                  {status === "error" && (
+                    <span className="inline-flex items-center gap-2 text-[#ff8a7a]">
+                      <AlertCircle size={18} /> Something went wrong. Please email me directly.
+                    </span>
+                  )}
+                </p>
+              </div>
             </form>
           </div>
         </div>
+
+        <Footer />
       </div>
     </section>
   );

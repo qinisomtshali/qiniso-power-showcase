@@ -1,232 +1,171 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Calendar, MapPin, Building, ChevronRight } from 'lucide-react';
+import { useRef } from "react";
+import { gsap, SplitText, useGSAP, prefersReducedMotion } from "@/lib/gsap";
+import { useReveals } from "@/lib/reveal";
+import ContourField from "@/components/fx/ContourField";
+import { EXPERIENCE } from "@/data/experience";
 
 const Experience = () => {
-  const experiences = [
-    {
-      title: "Junior Software Engineer & Application Support",
-      company: "HearConnect SA",
-      location: "South Africa",
-      period: "MAR 2026 – Present",
-      type: "Full-time",
-      description:
-        "Building, enhancing, and maintaining the company's primary CRM system and integrated applications across the Microsoft technology stack. Delivering full-stack internal systems from requirements through to deployment, while providing first- and second-line application support across Microsoft environments and third-party platforms.",
-      achievements: [
-        "CRM development & maintenance across the Microsoft stack",
-        "Full-stack application development from requirements to deployment",
-        "First- and second-line application support & troubleshooting",
-        "System performance monitoring and proactive issue resolution",
-        "IT governance, data protection, and security protocol adherence",
-        "User access management and internal user support"
-      ],
-      logo: "hearconnect.png",
-      color: "from-blue-500 to-cyan-500"
+  const root = useRef<HTMLElement>(null);
+  const list = useRef<HTMLOListElement>(null);
+  const thread = useRef<HTMLDivElement>(null);
+  const marker = useRef<HTMLDivElement>(null);
+
+  useReveals(root);
+
+  useGSAP(
+    () => {
+      if (prefersReducedMotion()) return;
+      const rows = gsap.utils.toArray<HTMLElement>("[data-row]");
+      const splits: SplitText[] = [];
+
+      // Progress thread + a square marker that turns five quarter-turns on its way down.
+      gsap.set(marker.current, { xPercent: -50 });
+      gsap
+        .timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: { trigger: list.current, start: "top 60%", end: "bottom 60%", scrub: true, invalidateOnRefresh: true },
+        })
+        .to(thread.current, { scaleY: 1 }, 0)
+        .to(marker.current, { y: () => (list.current?.offsetHeight ?? 0) - 12, rotation: 450 }, 0);
+
+      rows.forEach((row) => {
+        const plate = row.querySelector("[data-plate]");
+        const yearBox = row.querySelector("[data-year]");
+        const yearNum = row.querySelector<HTMLElement>("[data-year-num]")!;
+        const meta = row.querySelectorAll("[data-meta]");
+
+        // Years assemble letter by letter, then settle back to 40%.
+        const split = SplitText.create(yearNum, { type: "chars", mask: "chars", charsClass: "split-char" });
+        splits.push(split);
+        gsap
+          .timeline({ scrollTrigger: { trigger: row, start: "top 72%", once: true } })
+          .from(split.chars, { yPercent: 115, duration: 1, ease: "expo.out", stagger: 0.07 })
+          .from(meta, { opacity: 0, y: 14, duration: 0.7, stagger: 0.08 }, 0.35)
+          .to(yearNum, { opacity: 0.4, duration: 0.9, ease: "power2.out" }, ">-0.1")
+          .fromTo(
+            plate,
+            { clipPath: "inset(0% 0% 100% 0%)" },
+            { clipPath: "inset(0% 0% 0% 0%)", duration: 1.2, ease: "expo.inOut", clearProps: "clipPath" },
+            0.1
+          );
+
+        // Three parallax layers per row.
+        const scrub = { trigger: row, start: "top bottom", end: "bottom top", scrub: true };
+        gsap.fromTo(yearBox, { y: 70 }, { y: -70, ease: "none", scrollTrigger: scrub });
+        gsap.fromTo(plate, { y: 18 }, { y: -18, ease: "none", scrollTrigger: scrub });
+      });
+
+      return () => splits.forEach((s) => s.revert());
     },
-    {
-      title: "Power Platform Developer Intern",
-      company: "HearConnect",
-      location: "South Africa",
-      period: "MAR 2025 – FEB 2026",
-      type: "Internship",
-      description:
-        "Building end-to-end business solutions using Power Apps, Power Automate, and SharePoint. Enhancing leave management and approval systems, integrating Microsoft services, and supporting digital transformation within the organization.",
-      achievements: [
-        "Built HearConnect leave management application",
-        "Automated document processing workflows",
-        "Implemented role-based access control systems",
-        "Reduced manual processing time by 60%"
-      ],
-      logo: "hearconnect.png",
-      color: "from-blue-500 to-cyan-500"
-    },
-    {
-      title: "Power Platform Developer Trainee",
-      company: "Mecer Inter-Ed",
-      location: "South Africa",
-      period: "JUL 2024 – DEC 2025",
-      type: "Training",
-      description:
-        "Completed structured Microsoft PL-200, PL-400, MB-210 training. Built end-to-end low-code solutions using Power Apps, Dataverse, and Dynamics 365.",
-      achievements: [
-        "Completed Microsoft PL-200, PL-400, MB-210 certifications",
-        "Developed custom business apps with Dataverse",
-        "Built sales automation flows using Dynamics 365",
-        "Gained hands-on experience with Power Platform architecture"
-      ],
-      logo: "mecer.png",
-      color: "from-purple-500 to-violet-500"
-    },
-    {
-      title: "Machine Operator",
-      company: "Ford Motor Company of Southern Africa",
-      location: "South Africa",
-      period: "FEB 2023 – JAN 2024",
-      type: "Full-time",
-      description:
-        "Gained hands-on experience in the automotive manufacturing sector, operating industrial machinery with precision and adhering to strict quality and safety protocols. Contributed to streamlined production workflows and efficient reporting systems.",
-      achievements: [
-        "Maintained high quality standards",
-        "Optimized production processes",
-        "Contributed to safety initiatives",
-        "Developed process improvement ideas"
-      ],
-      logo: "ford.png",
-      color: "from-orange-500 to-red-500"
-    },
-    {
-      title: "Multimedia Engineer Intern",
-      company: "Mbula RND",
-      location: "South Africa",
-      period: "JUN 2022 – DEC 2022",
-      type: "Internship",
-      description:
-        "Designed and developed an inclusive video game for the deaf community using Unity, C#, and Azure. Integrated multimedia elements and game mechanics to improve accessibility and promote digital inclusion.",
-      achievements: [
-        "Designed accessible video game using Unity and C#",
-        "Integrated Azure cloud services",
-        "Promoted inclusion for the deaf community",
-        "Worked across multimedia teams for UX improvements"
-      ],
-      logo: "mbula.png",
-      color: "from-green-500 to-emerald-500"
-    },
-    {
-      title: "Technical Lab Tutor",
-      company: "Tshwane University of Technology",
-      location: "South Africa",
-      period: "MAR 2021 – MAY 2022",
-      type: "Part-time",
-      description:
-        "Provided academic support in multimedia computing labs, mentoring students and facilitating practical sessions in animation, coding, and digital design. Developed strong foundations in education and technical communication.",
-      achievements: [
-        "Mentored 50+ students per semester",
-        "Assisted with programming assignments",
-        "Conducted lab sessions and tutorials",
-        "Improved student success rates"
-      ],
-      logo: "tut.png",
-      color: "from-indigo-500 to-blue-500"
-    },
-    {
-      title: "VR Developer",
-      company: "Go4IR",
-      location: "South Africa",
-      period: "JAN 2020 – MAR 2021",
-      type: "Contract",
-      description:
-        "Created interactive virtual reality experiences using Unity3D and Blender. Contributed to educational tools using multimedia pipelines.",
-      achievements: [
-        "Developed VR applications for deaf learners",
-        "Integrated sign language recognition",
-        "Built Unity-based educational games",
-        "Implemented Azure cloud integration"
-      ],
-      logo: "vr.png",
-      color: "from-pink-500 to-red-400"
-    }
-  ];
+    { scope: root }
+  );
 
   return (
-    <section id="experience" className="py-20 bg-white">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl lg:text-5xl font-bold mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
-          >
-            Professional <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Experience</span>
-          </motion.h2>
-          <p className="text-xl text-gray-600">
-            A journey of continuous learning and delivering impactful solutions
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-6"></div>
-        </div>
+    <section ref={root} id="experience" className="relative z-10 overflow-hidden bg-ink text-ice">
+      <ContourField
+        className="absolute inset-0 opacity-90"
+        color="rgba(246,248,249,0.055)"
+        accent="rgba(0,212,230,0.16)"
+        interactive={false}
+        speed={0.7}
+      />
 
-        <div className="relative">
-          {/* Timeline line */}
-          <div className="absolute left-4 md:left-1/2 transform md:-translate-x-px top-0 bottom-0 w-px bg-gradient-to-b from-blue-500 to-purple-500"></div>
+      <div className="relative mx-auto max-w-[96rem] px-5 py-28 md:px-10 md:py-44">
+        <p className="eyebrow text-ice/60" data-fade>
+          Experience
+        </p>
+        <h2 data-reveal="lines" className="display rv-pending mt-6 text-[clamp(3.2rem,10.5vw,11rem)] leading-[0.92]">
+          From VR to full stack
+        </h2>
+        <p data-fade data-delay="0.15" className="mt-8 max-w-md text-[0.98rem] leading-relaxed text-ice/60">
+          Seven chapters across game development, multimedia, manufacturing, low-code and software engineering.
+        </p>
 
-          <div className="space-y-12">
-            {experiences.map((exp, index) => (
-              <motion.div
-                key={index}
-                className={`relative flex items-center ${index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'}`}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-              >
-                {/* Timeline Dot with Pulse */}
-                <div className="absolute left-4 md:left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full bg-white border-4 border-blue-500 z-10 flex items-center justify-center overflow-hidden animate-pulse">
-                  <img src={`/Images/logos/${exp.logo}`} alt={exp.company} className="w-6 h-6 object-contain" />
-                </div>
+        <div className="relative mt-20 md:mt-32">
+          {/* Rail, progress thread and marker */}
+          <div aria-hidden="true" className="absolute bottom-0 left-4 top-0 w-px bg-ice/20 lg:left-1/2" />
+          <div
+            ref={thread}
+            aria-hidden="true"
+            className="absolute bottom-0 left-4 top-0 w-px origin-top scale-y-0 bg-ice lg:left-1/2"
+          />
+          <div
+            ref={marker}
+            aria-hidden="true"
+            className="absolute left-4 top-0 z-10 h-3 w-3 bg-signal shadow-[0_0_0_4px_#0b0c0f] lg:left-1/2"
+          />
 
-                {/* Card */}
-                <motion.div
-                  className={`ml-12 md:ml-0 ${index % 2 === 0 ? 'md:mr-8 md:ml-0' : 'md:ml-8 md:mr-0'} md:w-5/12`}
-                  whileHover={{ y: -8 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+          <ol ref={list} className="group/list space-y-20 lg:space-y-28">
+            {EXPERIENCE.map((role, i) => {
+              const yearLeft = i % 2 === 0;
+              return (
+                <li
+                  key={`${role.company}-${role.year}`}
+                  data-row
+                  className="relative grid gap-5 pl-12 transition-opacity duration-500 group-hover/list:[&:not(:hover)]:opacity-40 lg:grid-cols-2 lg:gap-28 lg:pl-0"
                 >
-                  <motion.div
-                    className="bg-white rounded-2xl shadow-lg hover:shadow-xl overflow-hidden border border-gray-100 group transition-all duration-300"
-                    initial="rest"
-                    animate="rest"
-                    whileHover="hover"
+                  {/* Rail node */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute left-4 top-6 z-[5] h-2.5 w-2.5 -translate-x-1/2 rotate-45 border border-ice/50 bg-ink lg:left-1/2"
+                  />
+
+                  {/* Year */}
+                  <div
+                    data-year
+                    className={`${yearLeft ? "lg:order-1 lg:text-right" : "lg:order-2 lg:text-left"} flex flex-col`}
                   >
-                    {/* Animated Top Border */}
-                    <motion.div
-                      className={`h-1 bg-gradient-to-r ${exp.color}`}
-                      variants={{
-                        rest: { scaleX: 0 },
-                        hover: { scaleX: 1 }
-                      }}
-                      transition={{ duration: 0.5, ease: 'easeOut' }}
-                      style={{ transformOrigin: 'center' }}
-                    />
+                    <span
+                      data-year-num
+                      aria-label={role.year}
+                      className="display block text-[clamp(4.5rem,12vw,12rem)] leading-[0.85]"
+                    >
+                      {role.year}
+                    </span>
+                    <span data-meta className="mt-3 text-[0.7rem] font-medium uppercase tracking-[0.22em] text-ice/50">
+                      {role.range}
+                    </span>
+                  </div>
 
-                    <div className="p-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <span className={`px-3 py-1 bg-gradient-to-r ${exp.color} text-white text-xs font-semibold rounded-full`}>
-                          {exp.type}
-                        </span>
-                        <div className="flex items-center text-gray-500 text-sm">
-                          <Calendar size={14} className="mr-1" />
-                          {exp.period}
+                  {/* Plate */}
+                  <div data-plate className={`${yearLeft ? "lg:order-2" : "lg:order-1"}`}>
+                    <div className="plate bg-[#535450] p-px">
+                      <div className="plate bg-[#101216] p-6 md:p-8">
+                        <div className="flex items-center justify-between gap-4">
+                          <div className="flex items-center gap-3">
+                            <span className="grid h-9 w-9 place-items-center rounded-full bg-white">
+                              <img src={`/Images/logos/${role.logo}`} alt="" className="h-5 w-5 object-contain" loading="lazy" />
+                            </span>
+                            <span className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-ice/80">{role.company}</span>
+                          </div>
+                          <span className="flex items-center gap-2 rounded-full border border-ice/20 px-3 py-1 text-[0.62rem] font-medium uppercase tracking-[0.18em] text-ice/70">
+                            {role.current && <span className="h-1.5 w-1.5 rounded-full bg-signal" />}
+                            {role.current ? "Now" : role.type}
+                          </span>
                         </div>
-                      </div>
 
-                      <h3 className="text-xl font-bold text-gray-800 mb-2">{exp.title}</h3>
-                      <div className="flex items-center text-blue-600 font-semibold mb-2">
-                        <Building size={16} className="mr-2" />
-                        {exp.company}
-                      </div>
-                      <div className="flex items-center text-gray-500 mb-4">
-                        <MapPin size={16} className="mr-2" />
-                        {exp.location}
-                      </div>
-                      <p className="text-gray-600 mb-4 leading-relaxed">{exp.description}</p>
+                        <h3 className="display mt-6 text-[clamp(1.7rem,2.6vw,2.6rem)] leading-[1]">{role.title}</h3>
+                        <p className="mt-1 text-[0.72rem] uppercase tracking-[0.18em] text-ice/45">
+                          {role.type} · {role.location}
+                        </p>
 
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-gray-800">Key Achievements:</h4>
-                        <ul className="space-y-1">
-                          {exp.achievements.map((achievement, achIndex) => (
-                            <li key={achIndex} className="flex items-start text-gray-600 text-sm">
-                              <ChevronRight size={14} className="mr-2 mt-0.5 text-blue-500 flex-shrink-0" />
-                              {achievement}
+                        <p className="mt-5 text-[0.92rem] leading-relaxed text-ice/65">{role.description}</p>
+
+                        <ul className="mt-5 grid gap-2 border-t border-ice/10 pt-5 text-[0.84rem] text-ice/80">
+                          {role.achievements.map((a) => (
+                            <li key={a} className="flex items-start gap-3">
+                              <span className="mt-[0.5rem] h-1 w-1 shrink-0 bg-signal" />
+                              {a}
                             </li>
                           ))}
                         </ul>
                       </div>
                     </div>
-                  </motion.div>
-                </motion.div>
-              </motion.div>
-            ))}
-          </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
         </div>
       </div>
     </section>

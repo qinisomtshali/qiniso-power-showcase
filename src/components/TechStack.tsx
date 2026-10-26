@@ -1,215 +1,55 @@
-import React from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { useReveals } from "@/lib/reveal";
+import Marquee from "@/components/fx/Marquee";
+import { SKILL_GROUPS, MARQUEE_TOP, MARQUEE_BOTTOM } from "@/data/skills";
 
 const TechStack = () => {
-  const powerPlatform = [
-    {
-      name: "Power Apps",
-      level: 85,
-      color: "bg-blue-500",
-      icon: "/Images/logos/powerapp.png",
-    },
-    {
-      name: "Power Automate",
-      level: 82,
-      color: "bg-purple-500",
-      icon: "/Images/logos/MicrosoftPowerAutomate.png",
-    },
-    {
-      name: "SharePoint",
-      level: 85,
-      color: "bg-green-500",
-      icon: "/Images/logos/sharepoint.png",
-    },
-    {
-      name: "Dataverse",
-      level: 65,
-      color: "bg-indigo-500",
-      icon: "/Images/logos/dataverse.png",
-    },
-    {
-      name: "Dynamics 365",
-      level: 70,
-      color: "bg-orange-500",
-      icon: "/Images/logos/Microsoft_365.png",
-    },
-  ];
-
-  const cloudTools = [
-    "Microsoft Azure",
-    "PowerShell",
-    "Power BI",
-    "Office 365",
-    "Azure Active Directory",
-    "Supabase",
-    "Azure Functions",
-  ];
-
-  const devTools = [
-    "Git & GitHub",
-    "Visual Studio Code",
-    "Power Platform CLI",
-    "Azure DevOps",
-    "REST APIs",
-    "React",
-    "TypeScript",
-    "Python",
-    "FastAPI",
-    "Blazor / ASP.NET",
-    "Node.js",
-  ];
-
-  const aiData = [
-    "OpenAI API",
-    "Qdrant",
-    "RAG / Vector Search",
-    "PyMuPDF",
-    "tiktoken",
-    "NumPy",
-  ];
-
-  const creative = [
-    "Unity 3D",
-    "Blender",
-    "Adobe Creative Suite",
-    "VR Development",
-    "Game Design",
-  ];
+  const root = useRef<HTMLElement>(null);
+  useReveals(root);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-50 to-indigo-50">
-      <div className="container mx-auto px-6 max-w-6xl">
-        <div className="text-center mb-16">
-          <motion.h2
-            className="text-4xl lg:text-5xl font-bold mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.5 }}
-            transition={{ duration: 0.6 }}
-          >
-            Tech{" "}
-            <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Stack
-            </span>
-          </motion.h2>
-          <p className="text-xl text-gray-600">
-            Technologies and tools I use to build powerful solutions
-          </p>
-          <div className="w-24 h-1 bg-gradient-to-r from-blue-600 to-purple-600 mx-auto rounded-full mt-6"></div>
-        </div>
+    <section ref={root} id="stack" className="relative z-10 overflow-hidden bg-ice py-28 md:py-44">
+      <div className="mx-auto max-w-[96rem] px-5 md:px-10">
+        <p className="eyebrow" data-fade>
+          Stack
+        </p>
+        <h2 data-reveal="lines" className="display rv-pending mt-6 text-[clamp(3.2rem,10.5vw,11rem)] leading-[0.92]">
+          Tools of the trade
+        </h2>
+      </div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Power Platform Skills */}
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-              <div className="w-3 h-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
-              Power Platform Expertise
-            </h3>
-            <div className="space-y-6">
-              {powerPlatform.map((skill, index) => (
-                <div key={index}>
-                  <div className="flex justify-between items-center mb-2">
-                    <div className="flex items-center gap-2 font-medium text-gray-700">
-                      {/* Icon */}
-                      <img
-                        src={skill.icon}
-                        alt={`${skill.name} icon`}
-                        className="w-5 h-5"
-                      />
-                      <span>{skill.name}</span>
-                    </div>
-                    <span className="text-sm text-gray-500">{skill.level}%</span>
-                  </div>
+      {/* Scroll-velocity tickers */}
+      <div className="mt-16 space-y-3 text-ink md:mt-24" aria-hidden="true">
+        <Marquee items={MARQUEE_TOP} speed={80} />
+        <Marquee items={MARQUEE_BOTTOM} speed={80} reverse />
+      </div>
 
-                  <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                    <motion.div
-                      className={`${skill.color} h-3 rounded-full`}
-                      initial={{ width: 0 }}
-                      whileInView={{ width: `${skill.level}%` }}
-                      viewport={{ once: true, amount: 0.5 }}
-                      transition={{ duration: 1.2, ease: "easeOut" }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Tool Categories */}
-          <div className="space-y-8">
-            {/* Cloud & Azure */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                Cloud & Azure
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {cloudTools.map((tool, index) => (
-                  <span
-                    key={index}
-                    className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium"
-                  >
-                    {tool}
-                  </span>
-                ))}
+      <div className="mx-auto mt-20 max-w-[96rem] px-5 md:mt-32 md:px-10">
+        <ul data-fade="children" data-stagger="0.1" className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          {SKILL_GROUPS.map((group, i) => (
+            <li
+              key={group.title}
+              className="group brackets relative flex min-h-[15rem] flex-col justify-between overflow-hidden p-6 text-ink transition-colors duration-500 hover:bg-ink hover:text-ice md:p-8"
+            >
+              <div className="flex items-start justify-between">
+                <h3 className="display text-[clamp(1.7rem,2.4vw,2.4rem)] leading-none">{group.title}</h3>
+                <span className="text-[0.7rem] font-medium tracking-[0.2em] text-steel transition-colors duration-500 group-hover:text-signal">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
               </div>
-            </div>
-
-            {/* Development Tools */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                Development Tools
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {devTools.map((tool, index) => (
-                  <span
-                    key={index}
-                    className="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium"
+              <ul className="mt-8 flex flex-wrap gap-2">
+                {group.items.map((item) => (
+                  <li
+                    key={item}
+                    className="rounded-full border border-ink/15 px-3 py-1 text-[0.68rem] font-medium uppercase tracking-[0.12em] text-ink/70 transition-colors duration-500 group-hover:border-ice/25 group-hover:text-ice/85"
                   >
-                    {tool}
-                  </span>
+                    {item}
+                  </li>
                 ))}
-              </div>
-            </div>
-
-            {/* Creative & Multimedia */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                Creative & Multimedia
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {creative.map((tool, index) => (
-                  <span
-                    key={index}
-                    className="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm font-medium"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* AI & Data */}
-            <div className="bg-white rounded-2xl shadow-lg p-6">
-              <h4 className="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                AI & Data
-              </h4>
-              <div className="flex flex-wrap gap-2">
-                {aiData.map((tool, index) => (
-                  <span
-                    key={index}
-                    className="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-medium"
-                  >
-                    {tool}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+              </ul>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

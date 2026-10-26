@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,9 +19,15 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
+				sans: ['"Space Grotesk"', 'system-ui', 'sans-serif'],
+				display: ['Oswald', 'Impact', 'sans-serif'],
 			},
 			colors: {
+				ice: { DEFAULT: '#f6f8f9', 2: '#ebeef1' },
+				line: '#dfe5e9',
+				ink: { DEFAULT: '#0b0c0f', 2: '#14161b', 3: '#1d2027' },
+				steel: '#8a95a1',
+				signal: '#00d4e6',
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -89,43 +94,19 @@ export default {
 						height: '0'
 					}
 				},
-				fadeIn: {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(20px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
+				spinSlow: {
+					to: { transform: 'rotate(360deg)' }
 				},
-				slideUp: {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(30px)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
-					}
-				},
-				scaleIn: {
-					'0%': {
-						opacity: '0',
-						transform: 'scale(0.9)'
-					},
-					'100%': {
-						opacity: '1',
-						transform: 'scale(1)'
-					}
+				pulseRing: {
+					'0%': { transform: 'scale(1)', opacity: '0.6' },
+					'100%': { transform: 'scale(2.6)', opacity: '0' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fadeIn 0.8s ease-out forwards',
-				'slide-up': 'slideUp 0.6s ease-out forwards',
-				'scale-in': 'scaleIn 0.5s ease-out forwards'
+				'spin-slow': 'spinSlow 14s linear infinite',
+				'pulse-ring': 'pulseRing 2.2s cubic-bezier(0.2, 0, 0, 1) infinite'
 			}
 		}
 	},

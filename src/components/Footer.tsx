@@ -1,107 +1,51 @@
-
-import React from 'react';
-import { Heart, Code, Linkedin, Github, Mail } from 'lucide-react';
+import { ArrowUp } from "lucide-react";
+import { useScroll } from "@/lib/scroll-context";
+import LocalTime from "@/components/fx/LocalTime";
+import { NAV, SITE } from "@/data/site";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
-
-  const quickLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Contact', href: '#contact' }
-  ];
-
-  const socialLinks = [
-    {
-      icon: <Linkedin className="w-5 h-5" />,
-      href: "https://www.linkedin.com/in/qiniso-mtshali-532394173/",
-      name: "LinkedIn"
-    },
-    {
-      icon: <Github className="w-5 h-5" />,
-      href: "https://github.com/qinisomtshali/", 
-      name: "GitHub"
-    },
-    {
-      icon: <Mail className="w-5 h-5" />,
-      href: "mailto:qiniso.sakhiwo.mtshali@gmail.com",
-      name: "Email"
-    }
-  ];
+  const { scrollTo } = useScroll();
 
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="container mx-auto px-6 py-12 max-w-6xl">
-        <div className="grid md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="md:col-span-2">
-            <div className="text-3xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-4">
-              Qiniso Mtshali
-            </div>
-            <p className="text-gray-400 text-lg mb-6 max-w-md">
-              Power Platform Developer passionate about building innovative business solutions 
-              with a creative edge from multimedia and VR backgrounds.
-            </p>
-      
+    <footer className="relative mx-auto mt-24 max-w-[96rem] px-5 pb-8 md:mt-36 md:px-10">
+      <div className="flex flex-col gap-8 border-t border-ice/15 pt-8 md:flex-row md:items-center md:justify-between">
+        <nav aria-label="Footer" className="flex flex-wrap gap-x-6 gap-y-2 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-ice/70">
+          {NAV.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={(e) => {
+                e.preventDefault();
+                scrollTo(item.href);
+              }}
+              className="transition-colors hover:text-signal"
+            >
+              {item.label}
+            </a>
+          ))}
+        </nav>
 
-          </div>
+        <button
+          type="button"
+          onClick={() => scrollTo(0, { duration: 2 })}
+          data-cursor="Top"
+          className="group inline-flex w-fit items-center gap-3 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-ice/70 transition-colors hover:text-signal"
+        >
+          Back to top
+          <span className="grid h-10 w-10 place-items-center rounded-full border border-ice/25 transition-all duration-300 group-hover:-translate-y-1 group-hover:border-signal group-hover:bg-signal group-hover:text-ink">
+            <ArrowUp size={16} />
+          </span>
+        </button>
+      </div>
 
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              {quickLinks.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href}
-                    className="text-gray-400 hover:text-white transition-colors duration-200"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Connect */}
-          <div>
-            <h3 className="text-xl font-semibold mb-4">Connect</h3>
-            <div className="flex gap-3">
-              {socialLinks.map((social, index) => (
-                <a
-                  key={index}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors duration-200 text-gray-400 hover:text-white"
-                  title={social.name}
-                >
-                  {social.icon}
-                </a>
-              ))}
-            </div>
-            
-            {/* Optional Creative Journey Link */}
-            <div className="mt-6">
-              <a 
-                href="https://github.com/qinisomtshali/"
-                className="text-purple-400 hover:text-purple-300 transition-colors duration-200 text-sm"
-              >
-                Explore My Creative Journey →
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <div className="border-t border-gray-800 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-          <div className="text-gray-400 text-sm">
-            © {currentYear} Qiniso Mtshali. All rights reserved.
-          </div>
-          <div className="text-gray-400 text-sm mt-4 md:mt-0">
-            Built with React & Tailwind CSS
-          </div>
-        </div>
+      <div className="mt-8 flex flex-col gap-3 text-[0.68rem] uppercase tracking-[0.18em] text-ice/40 md:flex-row md:justify-between">
+        <p>
+          © {SITE.year} {SITE.name}. All rights reserved.
+        </p>
+        <p>
+          Johannesburg · <LocalTime />
+        </p>
+        <p>Built with React, GSAP &amp; Lenis</p>
       </div>
     </footer>
   );
