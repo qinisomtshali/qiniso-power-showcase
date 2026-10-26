@@ -22,8 +22,10 @@ const wait = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, 
  * load (never shorter than ~1.4s, never longer than ~3s), then the curtain
  * lifts and `onReveal` lets the hero animate in underneath it.
  * Played once per browser tab; add ?intro to the URL to replay it.
+ * `waitFor` (the below-the-fold chunk) holds the curtain until it has arrived,
+ * within the same ~3s cap, so sections are mounted by the time it lifts.
  */
-const Loader = ({ onReveal }: { onReveal: () => void }) => {
+const Loader = ({ onReveal, waitFor }: { onReveal: () => void; waitFor?: Promise<unknown> }) => {
   const [active, setActive] = useState(shouldPlay);
   const { lock, unlock } = useScroll();
   const root = useRef<HTMLDivElement>(null);
@@ -57,7 +59,7 @@ const Loader = ({ onReveal }: { onReveal: () => void }) => {
         else window.addEventListener("load", () => resolve(), { once: true });
       });
       const ready = Promise.race([
-        Promise.all([document.fonts?.ready ?? Promise.resolve(), loaded, wait(1400)]),
+        Promise.all([document.fonts?.ready ?? Promise.resolve(), loaded, wait(1400), waitFor?.catch(() => undefined)]),
         wait(3200),
       ]);
 

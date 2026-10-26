@@ -76,6 +76,7 @@ Assets live in `public/`:
 src/
   components/     Page sections: Loader, Header, Hero, About, Projects,
                   Experience, TechStack, Certifications, Contact, Footer
+    Sections.tsx  Lazy chunk: Projects through Contact (everything below About)
     fx/           Visual effects: ContourField, CheckerSeam, Cursor, Marquee,
                   ProgressBar, LocalTime, useMagnetic
     ui/           shadcn/ui primitives
@@ -107,6 +108,8 @@ Text and block animations are declared with data attributes and wired up by `use
 - **Custom cursor and magnetic buttons** only run on devices with a fine pointer.
 - **Sticky project stack** is enabled at 1024 px wide and 680 px tall or larger; smaller screens get a regular stacked list.
 - Sections are plain `#about`, `#work`, `#experience`, `#stack`, `#credentials` and `#contact` anchors, scrolled to through Lenis.
+- **Code splitting:** the hero and About ship in the main bundle; everything below loads as a separate `Sections` chunk that starts downloading immediately, and the intro curtain waits for it (within its ~3s cap). React and GSAP/Lenis are split into their own long-lived vendor chunks in [vite.config.ts](vite.config.ts). A chunk that 404s after a redeploy triggers one automatic reload.
+- Anything that looks up a below-the-fold section by id at mount (the header's active-section tracking does) must re-run once `Sections` has mounted.
 
 ## Deployment
 

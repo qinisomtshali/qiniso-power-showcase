@@ -6,7 +6,7 @@ import { useIntro } from "@/lib/intro";
 import { useMagnetic } from "@/components/fx/useMagnetic";
 import { NAV, SITE, SOCIALS } from "@/data/site";
 
-const Header = () => {
+const Header = ({ sectionsReady }: { sectionsReady: boolean }) => {
   const { ready } = useIntro();
   const { scrollTo, lock, unlock } = useScroll();
   const [active, setActive] = useState("");
@@ -48,8 +48,14 @@ const Header = () => {
           }
         },
       });
+    },
+    { scope: bar }
+  );
 
-      // Highlight the section in view.
+  // Highlight the section in view. The lower sections load as a separate
+  // chunk, so look them up again once they have mounted.
+  useGSAP(
+    () => {
       NAV.forEach(({ href }) => {
         const section = document.querySelector(href);
         if (!section) return;
@@ -61,7 +67,7 @@ const Header = () => {
         });
       });
     },
-    { scope: bar }
+    { scope: bar, dependencies: [sectionsReady], revertOnUpdate: true }
   );
 
   // Slide in once the intro curtain lifts.
