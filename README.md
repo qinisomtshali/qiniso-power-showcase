@@ -1,73 +1,118 @@
-# Welcome to your Lovable project
+# Qiniso Mtshali — Portfolio
 
-## Project info
+Personal portfolio of **Qiniso Mtshali**, Full Stack Developer | Software Engineer, based in Johannesburg, South Africa.
 
-**URL**: https://lovable.dev/projects/0e10c817-92e2-48d6-b0f1-9007fe94ab53
+**Live:** https://qiniso-power-showcase.vercel.app
 
-## How can I edit this code?
+An editorial, animation-led single-page site: an intro curtain, a sticky hero that recedes under the next section, a stacked project showcase with live-site captures, a scroll-driven career timeline, velocity-reactive stack marquees and a working contact form.
 
-There are several ways of editing your application.
+## Tech stack
 
-**Use Lovable**
+| Area | Tools |
+| --- | --- |
+| Framework | React 18, TypeScript, Vite 5 (SWC) |
+| Styling | Tailwind CSS 3.4, shadcn/ui tokens, Oswald + Space Grotesk |
+| Motion | GSAP 3.15 (ScrollTrigger, SplitText), `@gsap/react`, Lenis smooth scroll |
+| Contact form | EmailJS (`@emailjs/browser`) |
+| Analytics | Vercel Analytics |
+| Hosting | Vercel, deployed from `main` |
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/0e10c817-92e2-48d6-b0f1-9007fe94ab53) and start prompting.
+## Getting started
 
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+Requires Node.js 18 or newer.
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+git clone https://github.com/qinisomtshali/qiniso-power-showcase.git
+cd qiniso-power-showcase
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The dev server runs on http://localhost:8080.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+| Script | What it does |
+| --- | --- |
+| `npm run dev` | Start the Vite dev server |
+| `npm run build` | Production build into `dist/` |
+| `npm run build:dev` | Development-mode build |
+| `npm run preview` | Serve the production build locally |
+| `npm run lint` | Run ESLint |
 
-**Use GitHub Codespaces**
+## Environment variables
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+The contact form sends mail through EmailJS. Create a `.env.local` file (git-ignored) with:
 
-## What technologies are used for this project?
+```sh
+VITE_EMAILJS_SERVICE_ID=your_service_id
+VITE_EMAILJS_TEMPLATE_ID=your_template_id
+VITE_EMAILJS_PUBLIC_KEY=your_public_key
+```
 
-This project is built with:
+Your EmailJS template should use these variables: `{{from_name}}`, `{{from_email}}` and `{{message}}`.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The same three variables must be set in the Vercel project settings, because Vite inlines them at build time. Without them the form cannot send.
 
-## How can I deploy this project?
+## Editing the content
 
-Simply open [Lovable](https://lovable.dev/projects/0e10c817-92e2-48d6-b0f1-9007fe94ab53) and click on Share -> Publish.
+All copy lives in typed data files, so most updates do not touch any component:
 
-## Can I connect a custom domain to my Lovable project?
+| File | Content |
+| --- | --- |
+| [src/data/site.ts](src/data/site.ts) | Name, role, contact details, CV path, social links, nav |
+| [src/data/projects.ts](src/data/projects.ts) | Featured projects (stacked panels) and the "More builds" list |
+| [src/data/experience.ts](src/data/experience.ts) | Career timeline |
+| [src/data/skills.ts](src/data/skills.ts) | Skill groups and marquee words |
+| [src/data/certifications.ts](src/data/certifications.ts) | Certifications and additional credentials |
 
-Yes, you can!
+Assets live in `public/`:
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+- **CV:** replace the PDF and update `cv` in `src/data/site.ts` if the filename changes.
+- **Project captures:** tall full-page screenshots at `public/Images/projects/<name>-long.webp`. On hover they scroll inside the project card.
+- **Social preview:** `public/og-image.jpg` (1200 × 630), referenced from `index.html`.
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## Project structure
+
+```
+src/
+  components/     Page sections: Loader, Header, Hero, About, Projects,
+                  Experience, TechStack, Certifications, Contact, Footer
+    fx/           Visual effects: ContourField, CheckerSeam, Cursor, Marquee,
+                  ProgressBar, LocalTime, useMagnetic
+    ui/           shadcn/ui primitives
+  data/           Typed site content (see above)
+  lib/
+    gsap.ts       Registers GSAP plugins; reduced-motion / pointer helpers
+    scroll.tsx    Lenis smooth scroll driven by the GSAP ticker
+    reveal.ts     Declarative text and fade reveals
+    intro.tsx     Context that gates animations until the loader lifts
+  pages/Index.tsx Composes the page
+```
+
+### Reveal system
+
+Text and block animations are declared with data attributes and wired up by `useReveals` in [src/lib/reveal.ts](src/lib/reveal.ts):
+
+```tsx
+<h2 className="rv-pending" data-reveal="lines">Selected work</h2>
+<p data-fade>Fades up when scrolled into view.</p>
+<p data-fade="children" data-gate>Waits for the intro curtain first.</p>
+```
+
+`data-reveal` accepts `lines`, `words` or `chars`. Add `rv-pending` to text that is split so it stays hidden until its animation is ready.
+
+## Behaviour worth knowing
+
+- **Intro loader** plays once per browser tab. Add `?intro` to the URL to replay it.
+- **Reduced motion:** with `prefers-reduced-motion`, the loader, smooth scrolling and scroll animations are switched off and all content is shown immediately.
+- **Custom cursor and magnetic buttons** only run on devices with a fine pointer.
+- **Sticky project stack** is enabled at 1024 px wide and 680 px tall or larger; smaller screens get a regular stacked list.
+- Sections are plain `#about`, `#work`, `#experience`, `#stack`, `#credentials` and `#contact` anchors, scrolled to through Lenis.
+
+## Deployment
+
+Pushing to `main` triggers a Vercel build (`npm run build`, output `dist/`). Set the EmailJS environment variables in the Vercel project settings before the first deploy.
+
+## Contact
+
+- LinkedIn: https://www.linkedin.com/in/qiniso-mtshali-532394173/
+- GitHub: https://github.com/qinisomtshali
