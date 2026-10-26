@@ -10,6 +10,9 @@ import { ScrollContext, type ScrollApi } from "./scroll-context";
  */
 export const ScrollProvider = ({ children }: { children: React.ReactNode }) => {
   const lenisRef = useRef<Lenis | null>(null);
+  // Children's layout effects (the intro loader) can call lock() before this
+  // provider's effect has created Lenis, so remember the request.
+  const lockedRef = useRef(false);
 
   useEffect(() => {
     if ("scrollRestoration" in history) history.scrollRestoration = "manual";
@@ -20,6 +23,13 @@ export const ScrollProvider = ({ children }: { children: React.ReactNode }) => {
     const lenis = new Lenis({ lerp: 0.09, smoothWheel: true });
     lenisRef.current = lenis;
     lenis.on("scroll", ScrollTrigger.update);
+
+    // Hand a pending lock over to Lenis (its own stopped class replaces the
+    // inline overflow fallback, which would otherwise outlive unlock()).
+    if (lockedRef.current) {
+      document.documentElement.style.removeProperty("overflow");
+      lenis.stop();
+    }
 
     const tick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(tick);
@@ -47,12 +57,14 @@ export const ScrollProvider = ({ children }: { children: React.ReactNode }) => {
         }
       },
       lock: () => {
+        lockedRef.current = true;
         if (lenisRef.current) lenisRef.current.stop();
         else document.documentElement.style.overflow = "hidden";
       },
       unlock: () => {
-        if (lenisRef.current) lenisRef.current.start();
-        else document.documentElement.style.removeProperty("overflow");
+        lockedRef.current = false;
+        document.documentElement.style.removeProperty("overflow");
+        lenisRef.current?.start();
       },
     }),
     []
